@@ -1,0 +1,90 @@
+
+.TH DIRNAME 1 "October 2026" "dirname" "User Commands"
+.SH NAME
+dirname \- strip the last component from a pathname
+.SH SYNOPSIS
+.B dirname
+.RB [ \-z ]
+.IR NAME ...
+.SH DESCRIPTION
+.B dirname
+outputs the directory portion of each specified pathname,
+removing the final component.
+.PP
+Trailing slashes are removed before processing.
+If a pathname contains no slash, the result is
+.BR . .
+If the pathname consists entirely of slashes, the result is
+.BR / .
+.PP
+Multiple pathnames may be specified, and each result is
+printed on a separate line by default.
+.SH OPTIONS
+.TP
+.BR \-z ", " \-\-zero
+End each output with a NUL byte instead of a newline.
+This allows safe processing of pathnames containing
+newline characters.
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Extract the directory portion of a pathname:
+.PP
+.RS
+.B dirname /usr/local/bin/gcc
+.RE
+.PP
+Output:
+.PP
+.RS
+.B /usr/local/bin
+.RE
+.PP
+Process multiple pathnames:
+.PP
+.RS
+.B dirname /usr/bin/gcc /etc/passwd
+.RE
+.PP
+Output:
+.PP
+.RS
+.nf
+/usr/bin
+/etc
+.fi
+.RE
+.PP
+A pathname without a slash produces
+.BR . :
+.PP
+.RS
+.B dirname file.txt
+.RE
+.PP
+Produce NUL-terminated output:
+.PP
+.RS
+.B dirname -z /usr/local/bin/gcc
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option was specified, no pathname was supplied,
+or an output error occurred.
+.SH STANDARDS
+The basic functionality conforms to POSIX
+.BR dirname .
+The
+.B \-z
+option, support for multiple pathnames, and the
+.B \-\-help
+option are extensions.
+.SH SEE ALSO
+.BR basename (1),
+.BR realpath (1)
+

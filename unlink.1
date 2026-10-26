@@ -1,0 +1,84 @@
+
+.TH UNLINK 1 "October 2026" "unlink" "User Commands"
+.SH NAME
+unlink \- remove a file using the unlink system call
+.SH SYNOPSIS
+.B unlink
+.I FILE
+.SH DESCRIPTION
+.B unlink
+removes the specified file by calling the
+.BR unlink (2)
+system call directly.
+.PP
+The operation removes a directory entry and decrements
+the link count of the associated inode.
+The file's storage is released when its link count reaches
+zero and no process holds the file open.
+.PP
+If the file has multiple hard links, removing one link
+does not affect the others.
+.PP
+If the specified pathname refers to a symbolic link,
+the symbolic link itself is removed, not its target.
+.PP
+Unlike
+.BR rm ,
+this command accepts exactly one pathname and does not
+support recursive removal, interactive confirmation,
+or forced deletion.
+.PP
+Directories cannot normally be removed using
+.BR unlink .
+Use
+.B rmdir
+to remove an empty directory.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.TP
+.B \-\-
+End option processing, allowing filenames beginning with
+a hyphen.
+.SH EXAMPLES
+Remove a file:
+.PP
+.RS
+.B unlink file.txt
+.RE
+.PP
+Remove a symbolic link without affecting its target:
+.PP
+.RS
+.B unlink symlink
+.RE
+.PP
+Remove a file whose name begins with a hyphen:
+.PP
+.RS
+.B unlink -- -filename
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option or number of arguments was specified,
+or the file could not be unlinked.
+.SH STANDARDS
+The basic functionality conforms to POSIX
+.BR unlink .
+The
+.B \-h
+and
+.B \-\-help
+options are extensions.
+.SH SEE ALSO
+.BR link (1),
+.BR rm (1),
+.BR rmdir (1),
+.BR unlink (2),
+.BR link (2),
+.BR symlink (2)

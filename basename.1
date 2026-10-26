@@ -1,0 +1,141 @@
+
+.TH BASENAME 1 "October 2026" "basename" "User Commands"
+.SH NAME
+basename \- strip directory and suffix from filenames
+.SH SYNOPSIS
+.B basename
+.I NAME
+.RI [ SUFFIX ]
+.PP
+.B basename
+.RB [ \-az ]
+.RB [ \-s
+.IR SUFFIX ]
+.IR NAME ...
+.SH DESCRIPTION
+.B basename
+outputs the final component of each specified pathname,
+removing any leading directory components.
+.PP
+Trailing slashes are removed before processing.
+If a pathname contains no slash, it is printed unchanged.
+If the pathname consists entirely of slashes, the result is
+.BR / .
+.PP
+An optional suffix may be specified and is removed from
+the end of the resulting filename if it matches.
+The suffix is not removed if it equals the entire filename.
+.PP
+By default, a single pathname is processed.
+Multiple pathnames are supported with
+.B \-a
+or
+.BR \-s .
+Each result is printed on a separate line unless
+.B \-z
+is specified.
+.SH OPTIONS
+.TP
+.BR \-a ", " \-\-multiple
+Support multiple pathnames.
+.TP
+.BR \-s " " \fISUFFIX\fR ", " \-\-suffix=\fISUFFIX\fR
+Remove a trailing suffix from each filename.
+This option implies
+.BR \-a .
+.TP
+.BR \-z ", " \-\-zero
+End each output with a NUL byte instead of a newline.
+This allows safe processing of filenames containing
+newline characters.
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Extract the final component of a pathname:
+.PP
+.RS
+.B basename /usr/local/bin/gcc
+.RE
+.PP
+Output:
+.PP
+.RS
+.B gcc
+.RE
+.PP
+Remove a suffix:
+.PP
+.RS
+.B basename /home/user/file.txt .txt
+.RE
+.PP
+Output:
+.PP
+.RS
+.B file
+.RE
+.PP
+Remove a suffix using an option:
+.PP
+.RS
+.B basename -s .txt /home/user/file.txt
+.RE
+.PP
+Process multiple pathnames:
+.PP
+.RS
+.B basename -a /usr/bin/gcc /usr/bin/ld
+.RE
+.PP
+Output:
+.PP
+.RS
+.nf
+gcc
+ld
+.fi
+.RE
+.PP
+Remove a suffix from multiple filenames:
+.PP
+.RS
+.B basename -s .txt file1.txt file2.txt
+.RE
+.PP
+Output:
+.PP
+.RS
+.nf
+file1
+file2
+.fi
+.RE
+.PP
+Produce NUL-terminated output:
+.PP
+.RS
+.B basename -az /usr/bin/gcc /usr/bin/ld
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option was specified, an invalid number of
+arguments was supplied, or an output error occurred.
+.SH STANDARDS
+The traditional
+.B basename NAME [SUFFIX]
+functionality conforms to POSIX.
+The
+.BR \-a ,
+.BR \-s ,
+.BR \-z ,
+and
+.B \-\-help
+options are extensions.
+.SH SEE ALSO
+.BR dirname (1),
+.BR realpath (1)

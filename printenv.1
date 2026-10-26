@@ -1,0 +1,115 @@
+
+.TH PRINTENV 1 "October 2026" "printenv" "User Commands"
+.SH NAME
+printenv \- print environment variables
+.SH SYNOPSIS
+.B printenv
+.RB [ \-0 ]
+.RI [ VARIABLE ...]
+.SH DESCRIPTION
+.B printenv
+prints the values of the specified environment variables.
+.PP
+If no variables are specified, the entire environment is
+printed, with each entry in the form
+.BR NAME=VALUE .
+.PP
+When one or more variable names are specified, only their
+values are printed, in the order requested.
+Variable names are not included in the output.
+.PP
+If a requested variable is not defined, no output is produced
+for that variable, and the exit status is set to 1.
+Processing continues with any remaining variables.
+.PP
+An environment variable with an empty value produces an
+empty line and is considered defined.
+.PP
+By default, each output is terminated by a newline.
+.SH OPTIONS
+.TP
+.BR \-0 ", " \-\-null
+End each output with a NUL byte instead of a newline.
+This allows safe processing of values containing newline
+characters.
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Display all environment variables:
+.PP
+.RS
+.B printenv
+.RE
+.PP
+Display the value of a single variable:
+.PP
+.RS
+.B printenv HOME
+.RE
+.PP
+Example output:
+.PP
+.RS
+.B /home/user
+.RE
+.PP
+Display multiple variables:
+.PP
+.RS
+.B printenv HOME USER SHELL
+.RE
+.PP
+Example output:
+.PP
+.RS
+.nf
+/home/user
+user
+/bin/bash
+.fi
+.RE
+.PP
+Produce NUL-terminated output:
+.PP
+.RS
+.B printenv -0 PATH HOME
+.RE
+.PP
+Test whether an environment variable is defined:
+.PP
+.RS
+.nf
+if printenv HOME > /dev/null; then
+    echo "HOME is defined"
+else
+    echo "HOME is not defined"
+fi
+.fi
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion. All requested variables were found,
+or the entire environment was printed successfully.
+.TP
+.B 1
+One or more requested variables were not found or had
+invalid names.
+.TP
+.B 2
+An invalid option was specified or an output error occurred.
+.SH STANDARDS
+The basic functionality conforms to POSIX
+.BR printenv .
+The
+.BR \-0 ,
+.BR \-\-null ,
+and
+.B \-\-help
+options are extensions.
+.SH SEE ALSO
+.BR env (1),
+.BR export (1),
+.BR getenv (3),
+.BR environ (7)

@@ -1,0 +1,74 @@
+
+.TH HOSTID 1 "October 2026" "hostid" "User Commands"
+.SH NAME
+hostid \- print the numeric identifier of the current host
+.SH SYNOPSIS
+.B hostid
+.RB [ \-h ]
+.SH DESCRIPTION
+.B hostid
+prints the numeric identifier of the current host
+as an eight-digit hexadecimal number.
+.PP
+The identifier is obtained using the
+.BR gethostid (3)
+function and represents a 32-bit value associated
+with the system.
+.PP
+On Linux systems using glibc, the identifier is normally
+read from
+.B /etc/hostid
+if that file exists.
+Otherwise, the library attempts to derive an identifier
+from the host's network address.
+.PP
+Host identifiers were historically used for software
+licensing and machine identification.
+They may also be used by software such as OpenZFS
+to identify the system associated with a storage pool.
+.PP
+The host identifier is not guaranteed to be unique
+and should not be used as a secure machine identity.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Display the host identifier:
+.PP
+.RS
+.B hostid
+.RE
+.PP
+Example output:
+.PP
+.RS
+.B 007f0101
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option or argument was specified,
+or an output error occurred.
+.SH FILES
+.TP
+.B /etc/hostid
+Optional file containing the system's host identifier,
+used by glibc when available.
+.SH NOTES
+The host identifier is distinct from the hostname
+and from the machine identifier stored in
+.BR /etc/machine-id .
+.PP
+The
+.B hostid
+utility does not modify the host identifier.
+.SH SEE ALSO
+.BR hostname (1),
+.BR gethostid (3),
+.BR sethostid (3),
+.BR machine-id (5)
+

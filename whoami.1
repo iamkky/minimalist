@@ -1,0 +1,71 @@
+
+.TH WHOAMI 1 "October 2026" "whoami" "User Commands"
+.SH NAME
+whoami \- print the effective username
+.SH SYNOPSIS
+.B whoami
+.RB [ \-h ]
+.SH DESCRIPTION
+.B whoami
+prints the username associated with the effective user ID
+of the current process.
+.PP
+The effective user ID may differ from the real user ID,
+for example when running a command through
+.B sudo
+or executing a setuid program.
+.PP
+The username is obtained through the system user database,
+using the effective user ID.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Display the effective username:
+.PP
+.RS
+.B whoami
+.RE
+.PP
+Output:
+.PP
+.RS
+.B user
+.RE
+.PP
+Display the effective username when running as another user:
+.PP
+.RS
+.B sudo whoami
+.RE
+.PP
+Output:
+.PP
+.RS
+.B root
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option or argument was specified,
+the effective user ID could not be resolved to a username,
+or an output error occurred.
+.SH STANDARDS
+The basic functionality conforms to POSIX
+.BR whoami .
+The
+.BR \-h
+and
+.B \-\-help
+options are extensions.
+.SH SEE ALSO
+.BR id (1),
+.BR logname (1),
+.BR sudo (8),
+.BR getpwuid (3),
+.BR geteuid (2)
+

@@ -1,0 +1,137 @@
+
+.TH CKSUM 1 "October 2026" "cksum" "User Commands"
+.SH NAME
+cksum \- calculate CRC checksums and file lengths
+.SH SYNOPSIS
+.B cksum
+.RB [ \-HIPLN ]
+.RI [ FILE ...]
+.PP
+.B crc32
+.RI [ FILE ...]
+.SH DESCRIPTION
+.B cksum
+calculates a cyclic redundancy check (CRC) checksum for each
+specified file and prints the checksum, file length in bytes,
+and filename.
+.PP
+If no files are specified, standard input is read.
+A filename of
+.B \-
+also refers to standard input.
+.PP
+By default,
+.B cksum
+uses the POSIX CRC algorithm with a big-endian CRC calculation,
+includes the file length in the CRC calculation, and applies
+a final bitwise inversion.
+.PP
+When invoked as
+.BR crc32 ,
+the program calculates a standard reflected CRC-32 checksum,
+printing eight hexadecimal digits without the file length.
+This is equivalent to invoking
+.B cksum
+with the options
+.BR \-HPLN .
+.SH OPTIONS
+.TP
+.B \-H
+Print the checksum as eight hexadecimal digits instead of decimal.
+.TP
+.B \-I
+Skip the final bitwise inversion of the CRC value.
+.TP
+.B \-P
+Initialize the CRC calculation with all bits set to one
+instead of zero.
+.TP
+.B \-L
+Use the reflected, little-endian CRC algorithm instead of
+the default big-endian algorithm.
+.TP
+.B \-N
+Do not include the file length in the CRC calculation,
+and omit the length from the output.
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH OUTPUT
+The default output format is:
+.PP
+.RS
+.I checksum length filename
+.RE
+.PP
+The length is expressed in bytes.
+When reading from standard input without a file argument,
+the filename is omitted.
+.PP
+With
+.BR \-N ,
+the length field is omitted.
+With
+.BR \-H ,
+the checksum is printed in hexadecimal.
+.PP
+When invoked as
+.BR crc32 ,
+the output consists of an eight-digit hexadecimal checksum,
+followed by the filename when one was specified.
+.SH EXAMPLES
+Calculate the POSIX checksum of a file:
+.PP
+.RS
+.B cksum file.txt
+.RE
+.PP
+Print the checksum in hexadecimal:
+.PP
+.RS
+.B cksum -H file.txt
+.RE
+.PP
+Calculate a standard CRC-32 checksum:
+.PP
+.RS
+.B crc32 file.txt
+.RE
+.PP
+Calculate CRC-32 using the
+.B cksum
+command:
+.PP
+.RS
+.B cksum -HPLN file.txt
+.RE
+.PP
+Calculate checksums for multiple files:
+.PP
+.RS
+.B cksum file1.txt file2.txt
+.RE
+.PP
+Calculate a checksum from standard input:
+.PP
+.RS
+.B echo hello | cksum
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option was specified or an error occurred
+while opening or reading a file.
+.SH STANDARDS
+The default checksum calculation follows the POSIX
+.B cksum
+algorithm.
+The additional options and the
+.B crc32
+invocation are extensions.
+.SH SEE ALSO
+.BR sha256sum (1),
+.BR md5sum (1)
+

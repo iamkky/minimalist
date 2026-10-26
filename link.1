@@ -1,0 +1,82 @@
+
+.TH LINK 1 "October 2026" "link" "User Commands"
+.SH NAME
+link \- create a hard link to a file
+.SH SYNOPSIS
+.B link
+.I FILE1 FILE2
+.SH DESCRIPTION
+.B link
+creates a hard link named
+.I FILE2
+to the existing file
+.IR FILE1 .
+.PP
+The operation uses the
+.BR link (2)
+system call directly.
+Both filenames refer to the same inode and share the same
+file contents, permissions, ownership, and timestamps.
+.PP
+Changes made through either filename are visible through
+the other. Removing one link does not delete the file
+as long as another hard link remains.
+.PP
+Hard links cannot normally cross filesystem boundaries
+or refer to directories.
+The destination must not already exist.
+.PP
+Unlike
+.BR ln ,
+this command does not support symbolic links, overwriting
+existing files, or creating links to multiple files.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.TP
+.B \-\-
+End option processing, allowing filenames beginning with
+a hyphen.
+.SH EXAMPLES
+Create a hard link:
+.PP
+.RS
+.B link original.txt hardlink.txt
+.RE
+.PP
+Both filenames now refer to the same file contents.
+.PP
+Verify that both filenames share the same inode:
+.PP
+.RS
+.B ls -i original.txt hardlink.txt
+.RE
+.PP
+Create a hard link using filenames beginning with a hyphen:
+.PP
+.RS
+.B link -- -source -destination
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option or number of arguments was specified,
+or the hard link could not be created.
+.SH STANDARDS
+The basic functionality conforms to POSIX
+.BR link .
+The
+.B \-h
+and
+.B \-\-help
+options are extensions.
+.SH SEE ALSO
+.BR ln (1),
+.BR unlink (1),
+.BR link (2),
+.BR unlink (2),
+.BR symlink (2)

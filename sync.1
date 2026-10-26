@@ -1,0 +1,152 @@
+
+.TH SYNC 1 "October 2026" "sync" "User Commands"
+.SH NAME
+sync \- synchronize cached writes to persistent storage
+.SH SYNOPSIS
+.B sync
+.RB [ \-df ]
+.RI [ FILE ...]
+.SH DESCRIPTION
+.B sync
+synchronizes cached filesystem writes to persistent storage.
+.PP
+If no files are specified,
+.B sync
+requests synchronization of all mounted filesystems using
+the
+.BR sync (2)
+system call.
+.PP
+If one or more files are specified,
+.B sync
+synchronizes each file individually using
+.BR fsync (2).
+This includes file data and associated metadata.
+.PP
+With the
+.B \-d
+option, only file data and metadata required for subsequent
+data retrieval are synchronized using
+.BR fdatasync (2).
+.PP
+With the
+.B \-f
+option, the entire filesystem containing each specified file
+is synchronized using
+.BR syncfs (2).
+If no files are specified, all filesystems are synchronized.
+.PP
+The
+.B \-d
+and
+.B \-f
+options are mutually exclusive.
+The
+.B \-d
+option requires at least one filename.
+.PP
+Files are processed independently.
+If an operation fails, an error is reported and processing
+continues with the remaining files.
+.SH OPTIONS
+.TP
+.BR \-d ", " \-\-data
+Synchronize file data without unnecessary metadata.
+Uses
+.BR fdatasync (2).
+Requires at least one filename.
+.TP
+.BR \-f ", " \-\-file-system
+Synchronize the entire filesystem containing each specified
+file using
+.BR syncfs (2).
+Without filenames, synchronize all filesystems.
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Synchronize all filesystems:
+.PP
+.RS
+.B sync
+.RE
+.PP
+Synchronize a single file, including its metadata:
+.PP
+.RS
+.B sync /var/log/messages
+.RE
+.PP
+Synchronize only file data and required metadata:
+.PP
+.RS
+.B sync -d /var/log/messages
+.RE
+.PP
+Synchronize the filesystem containing a directory:
+.PP
+.RS
+.B sync -f /home
+.RE
+.PP
+Synchronize multiple files:
+.PP
+.RS
+.B sync file1.txt file2.txt
+.RE
+.PP
+Synchronize the filesystems containing multiple paths:
+.PP
+.RS
+.B sync -f /home /var
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option or option combination was specified,
+a required filename was missing, or an error occurred
+while opening, synchronizing, or closing a file.
+.SH NOTES
+The
+.B sync
+command requests that the kernel synchronize cached writes
+with the underlying storage devices.
+The exact persistence guarantees depend on the filesystem,
+storage hardware, and kernel implementation.
+.PP
+When filenames are specified, the implementation opens
+them with
+.B O_NONBLOCK
+and attempts read-only access first, falling back to
+write-only access if necessary.
+.PP
+The command does not recursively traverse directories.
+When
+.B \-f
+is used, synchronization applies to the entire filesystem,
+regardless of whether the specified pathname refers to
+a file or directory.
+.SH STANDARDS
+The basic
+.B sync
+functionality conforms to POSIX.
+The
+.BR \-d ,
+.BR \-f ,
+and
+.B \-\-help
+options are extensions.
+.PP
+This implementation targets Linux and uses the
+Linux-specific
+.BR syncfs (2)
+system call for filesystem synchronization.
+.SH SEE ALSO
+.BR fsync (2),
+.BR fdatasync (2),
+.BR sync (2),
+.BR syncfs (2),
+.BR mount (8)

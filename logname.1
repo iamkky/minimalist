@@ -1,0 +1,82 @@
+
+.TH LOGNAME 1 "October 2026" "logname" "User Commands"
+.SH NAME
+logname \- print the login username
+.SH SYNOPSIS
+.B logname
+.RB [ \-h ]
+.SH DESCRIPTION
+.B logname
+prints the username associated with the current login session.
+.PP
+Unlike
+.BR whoami ,
+which reports the effective username,
+.B logname
+reports the user who originally logged into the session,
+even if the effective user ID has changed through
+.B sudo
+or
+.BR su .
+.PP
+The login name is obtained through the system's
+.BR getlogin (3)
+function, which typically uses the controlling terminal
+and login session records.
+.PP
+If no login session can be identified,
+.B logname
+prints an error message and exits with a nonzero status.
+This may occur in containers, scheduled jobs, or processes
+without a controlling terminal.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Display usage information and exit.
+.SH EXAMPLES
+Display the login username:
+.PP
+.RS
+.B logname
+.RE
+.PP
+Output:
+.PP
+.RS
+.B user
+.RE
+.PP
+Display the login username after switching to another user:
+.PP
+.RS
+.nf
+$ sudo -i
+# whoami
+root
+# logname
+user
+.fi
+.RE
+.SH EXIT STATUS
+.TP
+.B 0
+Successful completion.
+.TP
+.B 1
+An invalid option or argument was specified,
+the login name could not be determined,
+or an output error occurred.
+.SH STANDARDS
+The basic functionality conforms to POSIX
+.BR logname .
+The
+.B \-h
+and
+.B \-\-help
+options are extensions.
+.SH SEE ALSO
+.BR whoami (1),
+.BR id (1),
+.BR users (1),
+.BR su (1),
+.BR getlogin (3)
